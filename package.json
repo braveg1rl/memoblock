@@ -2,7 +2,7 @@
   "name": "memoblock",
   "description": "A nifty memory device for use in promise-chains.",
   "keywords": [],
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": "Meryn Stol <merynstol@gmail.com>",
   "homepage": "https://github.com/meryn/memoblock",
   "bugs": "https://github.com/meryn/memoblock/issues",
