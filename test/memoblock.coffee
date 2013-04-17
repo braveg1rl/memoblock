@@ -1,15 +1,7 @@
 assert = require "assert"
-RSVP = require "rsvp"
 faithful = require "faithful"
 
 memoblock = require "../"
-
-makePromise = (func) ->
-  promise = new RSVP.Promise
-  resolve = (value) -> promise.resolve value
-  reject = (error) -> promise.reject error
-  func resolve, reject
-  promise
 
 describe "memoblock.makeMemo", ->
   describe "when passed no arguments", ->

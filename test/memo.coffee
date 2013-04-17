@@ -1,9 +1,7 @@
 assert = require "assert"
-RSVP = require "rsvp"
 faithful = require "faithful"
 
 memoblock = require "../"
-
 
 testValues =
   author: "Meryn Stol"
@@ -13,13 +11,6 @@ testValues =
   testNumber: 123
   signature: "Signed by HyperTrust Secure Message Verification Service. Really. Trust us."
   body: "Message authoring outsourced to Mechanicul Turk. Laziness is a virtue."
-  
-makePromise = (func) ->
-  promise = new RSVP.Promise
-  resolve = (value) -> promise.resolve value
-  reject = (error) -> promise.reject error
-  func resolve, reject
-  promise
 
 describe "memo.set", ->
   describe "when I set a regular value", ->
