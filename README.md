@@ -40,13 +40,13 @@ Memoblock.do([
     @body = consoleAPI.askForText "Message body" # promise
     @location = locationAPI.guessFriendlyName() # promise
   ->
-    @blurp = "\n\nWritten in #{memo.location}" # real
+    @blurp = "\n\nWritten in #{@location}" # real
     @body = @body + @blurp
-    @signature = signatureAPI.signMessage @name, @emailm, @subject, @body
+    @signature = signatureAPI.signMessage @name, @email, @subject, @body
   ->
     @date = new Date
   ->
-    @mailResult = mailerAPI.sent @name, @email, @body + @signature
+    @mailResult = mailAPI.send @name, @email, @body + @signature
   ->
     console.log "Successfully sent your message '#{@subject}' at #{@mailResult.getFriendlyTime()}."
 ]).then null, (err) ->
