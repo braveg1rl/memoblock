@@ -18,6 +18,10 @@ Using Memoblock is incredibly simple. You start a Memoblock with `Memoblock.do`.
 
 After any function has executed, the current properties of the `memo` object are inspected. If the properties contain any promises, they'll get resolved to their actual values. As soon as all promises have resolved, and the values of the `memo` object have been updated, the next function is called.
 
+Memoblock itself returns a promise which is fulfilled when all functions have been executed, and any last promises set to properties of the memo object have been fulfilled as well.
+
+If any promise assigned to a property of the memo object fails, no further functions will be executed, and the Memoblock promise will fail.
+
 ### How it's better
 
 1. No need to define var's up-front in an outer function context. You can set any value you want.
