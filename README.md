@@ -6,24 +6,20 @@ A nifty memory device for use with promise-chains.
 
 Promises are a great innovation to reduce "right-ward drift" as seen with code using regular node-style callbacks. It also eases error handling, relieving you from the necessity to check for errors after each asynchronous step.
 
-However, I found code that goes further than merely processing return values in a chain (comparable to a regular synchronous function chain) still to noisy and cumbersome for my tastes.
+However, I found code that goes further than merely processing return values in a chain (comparable to a regular synchronous function chain) still to noisy and cumbersome for my taste.
 
 Memoblock allows you to create a memo object which can be used as the return value value in your chain. It essentially takes over the role of what normally would be the function context which different statements can share, and which may hold any number of named objects. The keys set on the memo can be seen as local function variables.
 
 ## Usage
 
-A memo produced by Memoblock has two methods `memo.set` and `memo.get`. 
+Using Memoblock is incredibly simple. You start a Memoblock with `Memoblock.do`. You pass it an array consisting of any number of functions. These functions are called in turn with the value of `memo` as both the function context (`this`) as well as the first argument for the function.
 
-`memo.set` can be used to place either a regular value, or a promise for a value on the memo. Inside a function, you can put any number of values or promises of value on the memo, and you can mix them at will.
-
-Every time you call `memo.set`, it returns a promise for a new Memo. When this promise resolves, the value is a new Memo with the resolved value for all promises you had previously set.
-
-With `memo.get`, you can get the value of anything you had previously set. For convience, the values are also assigned to properties of the memo object.
+After any function has executed, the current properties of the `memo` object are inspected. If the properties contain any promises, they'll get resolved to their actual values. As soon as all promises have resolved, and the values of the `memo` object have been updated, the next function is called.
 
 ### How it's better
 
-1. No need to define var's up-front in an outer function context. You can set any value you want. Just like a regular object on which you set values.
-2. No need to think about whether the value you set is a real value or rather a promise for a value. Functions that return a promise appear in the code without any added noise.
+1. No need to define var's up-front in an outer function context. You can set any value you want.
+2. No need to think about whether the value you set is a real value or rather a promise for a value. Functions that return a promise appear in the code without any added noise, and are included without any extra effort.
 3. No need to assign any resolved value (available in the chain via first callback of "then") to a variable in the outer function context. This will save you one line of code for any value of promise you need to have available further down in the chain.
 
 ## Example
@@ -33,32 +29,45 @@ In this example, we attempt to build some kind of message piece by piece before 
 ```coffee
 Memoblock = require "memoblock"
 
-Memoblock.makeMemo()
-  .then (memo) ->
-    memo.set "name", "Meryn Stol" # real
-    memo.set "subject", consoleAPI.askForLine "Message subject" # promise
-  .then (memo) ->
-    memo.set "body", consoleAPI.askForText "Message body" # promise
-    memo.set "location", locationAPI.guessFriendlyName() # promise
-  .then (memo) ->
-    memo.set "blurp", "\n\nWritten in #{memo.location}" # real
-    memo.set "body", memo.body + memo.blurp
-    memo.set "signature", signatureAPI.signMessage memo.name, memo.subject, memo.body
-  .then (memo) ->
-    memo.set "date", new Date
-  .then (memo) ->
-    memo.set "mailResult", mailerAPI.sent memo.name, memo.email, memo.body + memo.signature
-  .then (memo) ->
-    console.log "Successfully sent your message '#{memo.subject}' at #{memo.mailResult.getFriendlyTime()}."
-  .then null, (err) ->
-    console.error err
+Memoblock.do([
+  ->
+    @name = "Meryn Stol" # real
+    @email = "merynstol@gmail.com" # real
+    @subject = consoleAPI.askForLine "Message subject" # promise
+  ->
+    @body = consoleAPI.askForText "Message body" # promise
+    @location = locationAPI.guessFriendlyName() # promise
+  ->
+    @blurp = "\n\nWritten in #{memo.location}" # real
+    @body = @body + @blurp
+    @signature = signatureAPI.signMessage @name, @emailm, @subject, @body
+  ->
+    @date = new Date
+  ->
+    @mailResult = mailerAPI.sent @name, @email, @body + @signature
+  ->
+    console.log "Successfully sent your message '#{@subject}' at #{@mailResult.getFriendlyTime()}."
+]).then null, (err) ->
+  console.error err
 ```
 
-Note that CoffeeScript automatically uses the last statement inside a function as return value. Otherwise, imagine "return" before every last line. A little less clean, but you'd have to live with all the `function`s, parentheses and braces as well...
+## Tips
 
-`Memoblock.makeMemo()` is the way to get a memo. It doesn't return a memo itself, but a promise for a memo, which means you start of your chain with `.then (memo) ->`.
+Memoblock will only wait for promises set as properties on the `memo` object. If you want to wait for a promise that doesn't return a value to be fullfilled before moving on to the next step, just assign it to a property of the memo object. The value of the property in the next step will be `undefined`.
 
-You can pass an object containing a mix of regular values and promises to `Memoblock.makeMemo`. These will be used as the initial values for the memo.
+If you start a Memoblock inside an object method, then by default, `this` will be bound to the memo object.
+
+ If you want any other value for this, you can bind the function explicitly to a particular object. In CoffeeScript, you can easily bind the function to the outer context by using `=>`. You of course then need to have access to the memo object, which you do with `(memo) =>` (or any other name). In JavaScript, you can use `function(memo){}.bind(this)`.
+ 
+ Alternatively, you can assign the outer `this` to a local variable before you start a memoblock. This variable will then will be accessible as any other. This in particularly attractive in CoffeeScript, beacuse it keeps the super short syntax for assigning properties available.
+ 
+ ```
+ self = this
+ Memoblock.do([
+   -> @prop1 = "prop1"
+   -> @prop2 = "prop2"
+ ])
+```
 
 ## Credits
 
