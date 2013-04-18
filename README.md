@@ -1,6 +1,6 @@
 # Memoblock
 
-A nifty memory device for use with promise-chains.
+Write super-clean async code, with promises.
 
 ## Rationale
 
@@ -8,7 +8,9 @@ Promises are a great innovation to reduce "right-ward drift" as seen with code u
 
 However, I found code that goes further than merely processing return values in a chain (comparable to a regular synchronous function chain) still to noisy and cumbersome for my taste.
 
-Memoblock allows you to create a memo object which can be used as the return value value in your chain. It essentially takes over the role of what normally would be the function context which different statements can share, and which may hold any number of named objects. The keys set on the memo can be seen as local function variables.
+Memoblock is based on a chain of functions which each can get and set properties on a single `memo` object. This `memo` object essentially takes over the role of what normally be your local function scope. What makes Memoblock special is that any promise you assign to a property in one function, will be resolved to its fulfilled value when the next function is called.
+
+This results in super-clean code, as you can see for yourself in the example below.
 
 ## Usage
 
