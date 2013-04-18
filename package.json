@@ -1,8 +1,13 @@
 {
   "name": "memoblock",
   "description": "Write super-clean async code with promises.",
-  "keywords": ["promises","flow-control","waterfall","async"],
-  "version": "0.1.0",
+  "keywords": [
+    "promises",
+    "flow-control",
+    "waterfall",
+    "async"
+  ],
+  "version": "0.2.0",
   "author": "Meryn Stol <merynstol@gmail.com>",
   "homepage": "https://github.com/meryn/memoblock",
   "bugs": "https://github.com/meryn/memoblock/issues",
