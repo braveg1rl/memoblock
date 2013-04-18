@@ -1,7 +1,7 @@
 {
   "name": "memoblock",
-  "description": "A nifty memory device for use in promise-chains.",
-  "keywords": [],
+  "description": "Write super-clean async code with promises.",
+  "keywords": ["promises","flow-control","waterfall","async"],
   "version": "0.1.0",
   "author": "Meryn Stol <merynstol@gmail.com>",
   "homepage": "https://github.com/meryn/memoblock",
@@ -12,12 +12,11 @@
   },
   "private": false,
   "dependencies": {
-    "rsvp": "~1.2.0"
+    "faithful": "~0.4.10"
   },
   "devDependencies": {
     "coffee-script": "~1.6.2",
-    "mocha": "~1.9.0",
-    "faithful": "~0.4.3"
+    "mocha": "~1.9.0"
   },
   "optionalDependencies": {},
   "engines": {
