@@ -1,6 +1,3 @@
-RSVP = require "rsvp"
-RSVPHash = require "./rsvp-hash"
-
 forbiddenNames = ['set','read','write','put','get','setValue','setPromise','await','_values','_promises','_all']
 
 module.exports = class Memo
