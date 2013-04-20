@@ -4,7 +4,7 @@ Write super-clean async code, with promises.
 
 ## Rationale
 
-Promises are a great innovation to reduce "right-ward drift" as seen with code using regular node-style callbacks. It also eases error handling, relieving you from the necessity to check for errors after each asynchronous step.
+Promises are a great invention to reduce "right-ward drift" as seen with code using regular node-style callbacks. It also eases error handling, relieving you from the necessity to check for errors after each asynchronous step.
 
 However, I found code that goes further than merely processing return values in a chain (comparable to a regular synchronous function chain) still to noisy and cumbersome for my taste.
 
@@ -16,17 +16,17 @@ This results in super-clean code, as you can see for yourself in the example bel
 
 Using Memoblock is incredibly simple. You start a Memoblock with `Memoblock.do`. You pass it an array consisting of any number of functions. These functions are called in turn with the value of `memo` as both the function context (`this`) as well as the first argument for the function.
 
-After any function has executed, the current properties of the `memo` object are inspected. If the properties contain any promises, they'll get resolved to their actual values. As soon as all promises have resolved, and the values of the `memo` object have been updated, the next function is called.
+After any function has executed, the current properties of the `memo` object are inspected. If some of these properties are promises, Memoblock will wait until they are fullfilled. As soon as all promises are fulfilled, and a new the values of the `memo` object have been updated, the next function is called.
 
-Memoblock itself returns a promise which is fulfilled when all functions have been executed, and any last promises set to properties of the memo object have been fulfilled as well.
+`Memoblock.do` returns a promise which is fulfilled when all functions have been executed, and any last promises set to properties of the memo object have been fulfilled as well.
 
-If any promise assigned to a property of the memo object fails, no further functions will be executed, and the Memoblock promise will fail.
+If any promise assigned to a property of the memo object fails, no further functions will be executed, and the promise returned by `Memoblock.do` will fail.
 
 ### How it's better
 
 1. No need to define var's up-front in an outer function context. You can set any value you want.
 2. No need to think about whether the value you set is a real value or rather a promise for a value. Functions that return a promise appear in the code without any added noise, and are included without any extra effort.
-3. No need to assign any resolved value (available in the chain via first callback of "then") to a variable in the outer function context. This will save you one line of code for any value of promise you need to have available further down in the chain.
+3. No need to assign any fulfilled value (normally passsed to of callback to `then`) to a variable in the outer function context. This will save you one line of code for any value of promise you need to have available further down in the chain.
 
 ## Example
 
@@ -50,7 +50,7 @@ Memoblock.do([
   ->
     @date = new Date
   ->
-    @mailResult = mailAPI.send @name, @email, @body + @signature
+    @mailResult = mailAPI.send @name, @email, @subject, @body + @signature
   ->
     console.log "Successfully sent your message '#{@subject}' at #{@mailResult.getFriendlyTime()}."
 ]).then null, (err) ->
