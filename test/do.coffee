@@ -14,7 +14,7 @@ testValues =
 
 describe "memoblock.do", ->
   describe "when I don't provide any functions", ->
-    it "return a promise for an empty object", (next) ->
+    it "returns a promise for an empty object", (next) ->
       memoblock.do([])
         .then (memo) ->
           assert.deepEqual memo, {}
