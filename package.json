@@ -17,7 +17,7 @@
   },
   "private": false,
   "dependencies": {
-    "faithful": "~0.4.10"
+    "faithful": "0.6.x"
   },
   "devDependencies": {
     "coffee-script": "~1.6.2",
