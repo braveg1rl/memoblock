@@ -1,0 +1,15 @@
+{
+  "name": "memoblock",
+  "repo": "meryn/memoblock",
+  "description": "Write super-clean async code with promises.",
+  "version": "0.3.4",
+  "keywords": [],
+  "dependencies": {
+    "meryn/faithful": "*"
+  },
+  "license": "MIT",
+  "main": "lib/memoblock.js",
+  "scripts": [
+    "lib/memoblock.js"
+  ]
+}
