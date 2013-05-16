@@ -7,7 +7,7 @@
     "waterfall",
     "async"
   ],
-  "version": "0.3.5",
+  "version": "0.3.6",
   "author": "Meryn Stol <merynstol@gmail.com>",
   "homepage": "https://github.com/meryn/memoblock",
   "bugs": "https://github.com/meryn/memoblock/issues",
