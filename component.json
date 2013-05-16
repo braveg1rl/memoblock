@@ -2,7 +2,7 @@
   "name": "memoblock",
   "repo": "meryn/memoblock",
   "description": "Write super-clean async code with promises.",
-  "version": "0.3.4",
+  "version": "0.3.6",
   "keywords": [],
   "dependencies": {
     "meryn/faithful": "*"

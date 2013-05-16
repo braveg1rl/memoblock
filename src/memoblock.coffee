@@ -12,13 +12,18 @@ module.exports = memoblock =
         return cb null, memo if i >= functions.length
         try r = functions[i].call memo, memo
         catch error then return cb error
-        if r and typeof r.then is "function"
+        if isPromise r and not isPropertyOf r, memo
           r.then(-> collect memo).then ((m) -> iterate m), (err) -> cb err
         else if containsPromises memo
-          faithful.collect(memo).then ((m) -> iterate m), (err) -> cb err
+          collect(memo).then ((m) -> iterate m), (err) -> cb err
         else
           iterate memo
       iterate memo
 
 containsPromises = (obj) ->
   return true for name, value of obj when isPromise value
+  return false
+  
+isPropertyOf = (subject, obj) ->
+ return true if value is subject for name, value of obj
+ return false
