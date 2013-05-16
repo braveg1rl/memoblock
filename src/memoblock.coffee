@@ -12,7 +12,7 @@ module.exports = memoblock =
         return cb null, memo if i >= functions.length
         try r = functions[i].call memo, memo
         catch error then return cb error
-        if isPromise r and not isPropertyOf r, memo
+        if (isPromise r) and not isPropertyOf r, memo
           r.then(-> collect memo).then ((m) -> iterate m), (err) -> cb err
         else if containsPromises memo
           collect(memo).then ((m) -> iterate m), (err) -> cb err
@@ -25,5 +25,5 @@ containsPromises = (obj) ->
   return false
   
 isPropertyOf = (subject, obj) ->
- return true if value is subject for name, value of obj
+ return true for name, value of obj when value is subject
  return false
