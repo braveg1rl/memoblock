@@ -1,5 +1,7 @@
 # Memoblock
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/braveg1rl/memoblock.svg)](https://greenkeeper.io/)
+
 Write super-clean async code, with promises.
 
 ## Rationale
